@@ -1,0 +1,8 @@
+setup.py
+cidnilib/__init__.py
+cidnilib/filebasedds.py
+cidnilib/main.py
+cidnilib.egg-info/PKG-INFO
+cidnilib.egg-info/SOURCES.txt
+cidnilib.egg-info/dependency_links.txt
+cidnilib.egg-info/top_level.txt
