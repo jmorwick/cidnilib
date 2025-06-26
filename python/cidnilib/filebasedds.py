@@ -14,8 +14,8 @@ from typing import BinaryIO
 from io import BytesIO
 from pickledb import PickleDB
 import os
+import sys
 from os.path import exists
-from os import walk
 from multihash import to_b58_string, from_b58_string
     
 class FileBasedDataService(DataService):
@@ -26,6 +26,8 @@ class FileBasedDataService(DataService):
                  hasher: Callable[[],HashAlgorithm] = MultiHashEncoder,
                  size_limit: int = 256, 
                  levels: int = 2):  
+        if not os.path.exists(path):
+            raise ValueError('Path {path} does not exist.'.format(path=path))
         super().__init__(encoder, decoder, hasher)
         self.path = path
         self.size_limit = size_limit
@@ -65,7 +67,7 @@ class FileBasedDataService(DataService):
             if not data:
                 break
             m.update(data)
-            print(".", end="", flush=True)
+            print(".", end="", flush=True, file=sys.stderr)
         digest = m.digest()
         id = self.encode(digest)
         path = self.resolve_path(id)
@@ -77,7 +79,7 @@ class FileBasedDataService(DataService):
                 if not data:
                     break
                 fpo.write(data)
-                print(".", end="", flush=True)
+                print(".", end="", flush=True, file=sys.stderr)
             fpo.close()
             return id, True
         else:
