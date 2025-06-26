@@ -37,7 +37,7 @@ class FileBasedDataService(DataService):
         """find file on the path that matches the id if it exists"""
         subdir = ''
         for i in range(self.levels):
-            subdir += id[-i-2] + '/'
+            subdir += id[-i-1] + '/'
             if not exists(self.path+'/'+subdir):
                 os.mkdir(self.path+'/'+subdir)
         path = self.path+'/'+subdir+id+'.bin' 
@@ -55,7 +55,7 @@ class FileBasedDataService(DataService):
         """find pickledb on the path that matches the name and generate if it doesn't exist"""
         subdir = ''
         for i in range(self.levels):
-            subdir += id[-i-2] + '/'
+            subdir += id[-i-1] + '/'
             if not exists(self.path+'/'+subdir):
                 os.mkdir(self.path+'/'+subdir)
         return PickleDB(self.path+'/'+subdir+'pickle.db')  
@@ -150,8 +150,6 @@ class FileBasedDataService(DataService):
 
     def forget_binary(self, id:bytes):
         return self.recall(self.encode(id))
-    
-    
 
     def list_known_cids(self) -> Iterator[str]:
         """Yield all known CIDs"""
