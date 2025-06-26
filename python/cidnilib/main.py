@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 from abc import abstractmethod
 from collections.abc import Callable
-from typing import BinaryIO
+from typing import BinaryIO, Iterator
 from hashlib import sha256
 from typing import Protocol, runtime_checkable
 from multihash import to_b58_string, from_b58_string, encode
@@ -69,6 +69,11 @@ class DataService:
 
     @abstractmethod
     def forget_binary(self, id:bytes) -> bytes:
+        """forget data associated with id"""
+        pass
+
+    @abstractmethod
+    def list_known_cids(self) -> Iterator[str]:
         """forget data associated with id"""
         pass
 

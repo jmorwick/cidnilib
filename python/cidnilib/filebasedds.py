@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 from .main import DataService, HashAlgorithm, MultiHashEncoder
 from collections.abc import Callable
-from typing import BinaryIO
+from typing import BinaryIO, Iterator
 from io import BytesIO
 from pickledb import PickleDB
 import os
@@ -150,3 +150,17 @@ class FileBasedDataService(DataService):
 
     def forget_binary(self, id:bytes):
         return self.recall(self.encode(id))
+    
+    
+
+    def list_known_cids(self) -> Iterator[str]:
+        """Yield all known CIDs"""
+        for root, dirs, files in os.walk(self.path):
+            for file in files:
+                if file.endswith('.bin'):
+                    yield file[:-4]  # Strip ".bin" to get the CID
+
+            if 'pickle.db' in files:
+                db_path = os.path.join(root, 'pickle.db')
+                db = PickleDB(db_path)
+                yield from db.getall()
