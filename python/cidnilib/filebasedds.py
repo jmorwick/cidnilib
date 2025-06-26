@@ -138,3 +138,15 @@ class FileBasedDataService(DataService):
 
     def recall_binary(self, id:bytes):
         return self.recall(self.encode(id))
+
+    def forget(self, id:str):
+        """forget data associated with name"""
+        path = self.resolve_path(id)
+        if exists(path):
+            os.remove(path)
+        else:
+            db = self.resolve_db(id)
+            del db[id]
+
+    def forget_binary(self, id:bytes):
+        return self.recall(self.encode(id))

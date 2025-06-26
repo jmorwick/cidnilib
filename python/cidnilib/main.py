@@ -66,9 +66,19 @@ class DataService:
         """retrieve data associated with id"""
         pass
 
+
+    @abstractmethod
+    def forget_binary(self, id:bytes) -> bytes:
+        """forget data associated with id"""
+        pass
+
     def recall(self, id:str) -> bytes:
         """retrieve data associated with id"""
         return self.recall_binary(self.decode(id))
+
+    def forget(self, id:str) -> bytes:
+        """forget data associated with id"""
+        return self.forget_binary(self.decode(id))
 
     def known_binary(self, id:bytes) -> bool:
         """determine if value is available for given id"""
